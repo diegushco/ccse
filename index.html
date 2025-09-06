@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tareas de Preguntas</title>
+  <link 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
+    rel="stylesheet"
+  />
+  <style>
+    .btn-task {
+      width: 100%;
+      padding: 1.5rem 1rem;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .container {
+      max-width: 700px;
+    }
+    pre {
+      white-space: pre-wrap; /* wrap long text */
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+    <h2>CCSE</h2>
+  <div class="container my-4">
+
+    <!-- Botones de tareas -->
+    <div id="tasks-buttons">
+      <button class="btn btn-primary btn-task" data-task="1">Tarea 1</button>
+      <button class="btn btn-primary btn-task" data-task="2">Tarea 2</button>
+      <button class="btn btn-primary btn-task" data-task="3">Tarea 3</button>
+      <button class="btn btn-primary btn-task" data-task="4">Tarea 4</button>
+      <button class="btn btn-primary btn-task" data-task="5">Tarea 5</button>
+    </div>
+
+    <!-- Capas de tareas ocultas inicialmente -->
+    <div id="task-content" class="d-none">
+      <div id="questions-list" class="mb-4" style=" overflow-y: auto; font-size: 1.3rem;"></div>
+      <button id="back-button" class="btn btn-secondary btn-lg">Volver</button>
+    </div>
+
+  </div>
+
+  <script>
+    // Preguntas y respuestas agrupadas por tarea
+    // Cada pregunta con su respuesta (simplificado con formato texto)
+    // Por brevedad, aquí va un ejemplo reducido; el usuario puede pegar el texto completo en el arreglo según su necesidad.
+
+    const questions = {
+      1: [
+  { "id": "1001", "q": "España es…", "a": "a) una monarquía parlamentaria." },
+  { "id": "1002", "q": "La ley fundamental de España se llama…", "a": "a) Constitución." },
+  { "id": "1003", "q": "Según la Constitución española, la soberanía nacional reside en…", "a": "a) el pueblo español." },
+  { "id": "1004", "q": "El Instituto de las Mujeres es…", "a": "b) un organismo español." },
+  { "id": "1005", "q": "¿Cuántas religiones oficiales hay en España?", "a": "a) Ninguna." },
+  { "id": "1006", "q": "El castellano o español es lengua oficial…", "a": "a) en toda España." },
+  { "id": "1007", "q": "¿Cuál de estas fuerzas de seguridad es de ámbito autonómico?", "a": "c) Policía Foral de Navarra." },
+  { "id": "1008", "q": "¿Qué fuerza de seguridad está en toda España?", "a": "b) El Cuerpo Nacional de Policía." },
+  { "id": "1009", "q": "En la Constitución se establece la separación de poderes: el poder ejecutivo, el legislativo y el…", "a": "a) judicial." },
+  { "id": "1010", "q": "La bandera de España debe utilizarse…", "a": "b) en todos los edificios públicos." },
+  { "id": "1011", "q": "¿Quién fue el primer rey de España?", "a": "b) Carlos I." },
+  { "id": "1012", "q": "La gestión de la sanidad es competencia de…", "a": "b) las comunidades autónomas." },
+  { "id": "1013", "q": "¿Quién fue el primer presidente del Gobierno de España en democracia?", "a": "b) Adolfo Suárez." },
+  { "id": "1014", "q": "¿Cuál de estos organismos se encarga de interpretar la Constitución?", "a": "b) El Tribunal Constitucional." },
+  { "id": "1015", "q": "¿Quién modera el funcionamiento de las instituciones españolas?", "a": "b) El rey." },
+  { "id": "1016", "q": "¿Cómo se llama la cámara de representación territorial en España?", "a": "a) Senado." },
+  { "id": "1017", "q": "¿Cuántas ciudades autónomas hay en España?", "a": "b) 2." },
+  { "id": "1018", "q": "¿Cómo se aprobó la Constitución?", "a": "b) En referéndum." },
+  { "id": "1019", "q": "¿Cómo se llama la ley más importante de cada comunidad autónoma?", "a": "a) Estatuto de Autonomía." },
+  { "id": "1020", "q": "Las instalaciones culturales y deportivas públicas son competencia del…", "a": "a) Ayuntamiento." },
+  { "id": "1021", "q": "¿Quién dirige la administración militar de España?", "a": "b) El Gobierno." },
+  { "id": "1022", "q": "¿Qué hay en las islas Baleares, en vez de diputaciones?", "a": "b) Consejos insulares." },
+  { "id": "1023", "q": "¿Qué ciudad tiene más habitantes?", "a": "b) Barcelona." },
+  { "id": "1024", "q": "Las Cortes Generales representan…", "a": "a) al pueblo español." },
+  { "id": "1025", "q": "El Congreso de los Diputados y el Senado constituyen el poder…", "a": "b) legislativo." },
+  { "id": "1026", "q": "¿Qué ley dicta el Gobierno en casos de especial urgencia?", "a": "a) El decreto ley." },
+  { "id": "1027", "q": "¿Cuántas comunidades autónomas hay en España?", "a": "b) 17." },
+  { "id": "1028", "q": "Los colores de la bandera española son…", "a": "b) rojo y amarillo." },
+  { "id": "1029", "q": "¿Dónde está la sede del Gobierno de España?", "a": "a) En Madrid." },
+  { "id": "1030", "q": "La bandera azul con 12 estrellas amarillas en círculo es la bandera de…", "a": "a) la Unión Europea." },
+  { "id": "1031", "q": "En las elecciones municipales se vota a…", "a": "a) alcaldes y concejales." },
+  { "id": "1032", "q": "¿Qué lengua es oficial en el País Vasco?", "a": "c) El euskera." },
+  { "id": "1033", "q": "Todos los españoles tienen el deber de conocer la lengua…", "a": "b) oficial del Estado." },
+  { "id": "1034", "q": "El aranés es una lengua cooficial que se habla en un pequeño territorio de…", "a": "a) Cataluña." },
+  { "id": "1035", "q": "Las instituciones de una comunidad autónoma son: la asamblea legislativa, el consejo de gobierno y…", "a": "b) el presidente." },
+  { "id": "1036", "q": "¿Cuál de estas opciones es una lengua cooficial en alguna comunidad autónoma?", "a": "a) El gallego." },
+  { "id": "1037", "q": "¿Qué institución tiene como fin la promoción de la enseñanza de la lengua española y la difusión de la cultura en español?", "a": "c) El Instituto Cervantes." },
+  { "id": "1038", "q": "¿Cuál de los siguientes organismos trabaja para conseguir la normalización lingüística?", "a": "c) La Real Academia Española." },
+  { "id": "1039", "q": "¿Dónde vive el presidente del Gobierno?", "a": "c) En el Palacio de la Moncloa." },
+  { "id": "1040", "q": "¿Cuál de los siguientes cuerpos forma parte de las Fuerzas Armadas de España?", "a": "c) El Ejército del Aire." },
+  { "id": "1041", "q": "¿Quiénes forman parte del Gobierno?", "a": "a) Los ministros." },
+  { "id": "1042", "q": "España es un…", "a": "a) estado social y democrático de Derecho." },
+  { "id": "1043", "q": "¿Cuál de las siguientes siglas corresponde a un partido político?", "a": "a) PP." },
+  { "id": "1044", "q": "¿Qué título tiene la futura reina, hija del rey?", "a": "a) Princesa de Asturias." },
+  { "id": "1045", "q": "¿Con qué rey se restaura la democracia en España después del régimen de Franco?", "a": "c) Con Juan Carlos I." },
+  { "id": "1046", "q": "¿En qué año se aprobó la Constitución española?", "a": "b) En 1978." },
+  { "id": "1047", "q": "¿Cuántas comunidades autónomas tienen su propia bandera?", "a": "b) Todas." },
+  { "id": "1048", "q": "¿Qué organismo oficial atiende las quejas de los ciudadanos por el mal funcionamiento de las administraciones?", "a": "c) El Defensor del Pueblo." },
+  { "id": "1049", "q": "¿Cuántas firmas, como mínimo, deben recoger los ciudadanos para poder presentar una proposición de ley?", "a": "c) 500 000." },
+  { "id": "1050", "q": "¿A cuál de estas organizaciones internacionales pertenece España?", "a": "b) A la Organización de las Naciones Unidas (ONU)." },
+  { "id": "1051", "q": "En la organización de la Administración se distinguen tres niveles: central, autonómica y…", "a": "c) local." },
+  { "id": "1052", "q": "El poder legislativo corresponde...", "a": "c) a los diputados y senadores." },
+  { "id": "1053", "q": "¿Dónde vive el rey?", "a": "b) En el Palacio de la Zarzuela." },
+  { "id": "1054", "q": "El nombre oficial del parlamento español es…", "a": "a) Cortes Generales." },
+  { "id": "1055", "q": "El Gobierno está formado por el presidente, uno o más vicepresidentes y los…", "a": "b) ministros." },
+  { "id": "1056", "q": "¿Quién puede reinar en España?", "a": "c) Tanto los hombres como las mujeres." },
+  { "id": "1057", "q": "El Tribunal de Cuentas depende de…", "a": "b) las Cortes Generales." },
+  { "id": "1058", "q": "¿Quién es la tercera autoridad del Estado, después del rey y el presidente del Gobierno?", "a": "c) El presidente del Congreso de los Diputados." },
+  { "id": "1059", "q": "¿Qué lengua cooficial se habla en las islas Baleares?", "a": "b) Catalán." },
+  { "id": "1060", "q": "La Constitución defiende valores tales como la libertad, la igualdad, el pluralismo político y…", "a": "a) la justicia." },
+  { "id": "1061", "q": "¿Cuántos kilómetros cuadrados tiene España, más o menos?", "a": "b) 500 000." },
+  { "id": "1062", "q": "¿Cuántos millones de habitantes tiene España?", "a": "b) 48 millones." },
+  { "id": "1063", "q": "¿Cuál de estos es un órgano consultivo del Gobierno de España?", "a": "b) El Consejo de Estado." },
+  { "id": "1064", "q": "¿Quién dirige la política interior y exterior de España?", "a": "b) El Gobierno." },
+  { "id": "1065", "q": "El Defensor del Pueblo depende de…", "a": "c) las Cortes Generales." },
+  { "id": "1066", "q": "El Instituto Etxepare tiene como misión la difusión del…", "a": "a) euskera y la cultura vasca." },
+  { "id": "1067", "q": "La Comunidad Iberoamericana de Naciones está formada por…", "a": "a) 22 países de América y de Europa." },
+  { "id": "1068", "q": "La Secretaría Xeral de Política Lingüística difunde y promociona la lengua y la cultura…", "a": "b) gallegas." },
+  { "id": "1069", "q": "¿Cómo se llama el rey de España?", "a": "b) Felipe VI." },
+  { "id": "1070", "q": "¿Cómo se llama el órgano de gobierno de los jueces y magistrados?", "a": "b) Consejo General del Poder Judicial." },
+  { "id": "1071", "q": "¿Quién aprueba los presupuestos generales del Estado?", "a": "a) Las Cortes Generales." },
+  { "id": "1072", "q": "La Constitución española es…", "a": "a) la ley fundamental." },
+  { "id": "1073", "q": "Las Cortes Generales están compuestas por el Senado y…", "a": "a) el Congreso de los Diputados." },
+  { "id": "1074", "q": "¿Quién elabora las leyes?", "a": "b) El poder legislativo." },
+  { "id": "1075", "q": "La defensa de la integridad territorial de España corresponde a…", "a": "b) las Fuerzas Armadas." },
+  { "id": "1076", "q": "El Ejército español participa desde 1989 en misiones de paz de la…", "a": "c) Organización de Naciones Unidas (ONU)." },
+  { "id": "1077", "q": "¿Quién vigila puertos y aeropuertos, fronteras y costas?", "a": "a) La Guardia Civil." },
+  { "id": "1078", "q": "¿Quién hace el control de pasaportes en las fronteras de España?", "a": "c) La Policía Nacional." },
+  { "id": "1079", "q": "¿Quién controla la circulación de coches en las ciudades?", "a": "b) La Policía local." },
+  { "id": "1080", "q": "¿Cómo se llama la policía autonómica de Cataluña?", "a": "c) Mossos d'Esquadra." },
+  { "id": "1081", "q": "¿Cómo se llama la policía autonómica del País Vasco?", "a": "a) Ertzaintza." },
+  { "id": "1082", "q": "¿Desde qué año es rey Felipe VI?", "a": "b) Desde 2014." },
+  { "id": "1083", "q": "¿Quién regula el tráfico en los pueblos y ciudades?", "a": "c) La Policía Local." },
+  { "id": "1084", "q": "¿Quién puede presentar una queja al Defensor del Pueblo?", "a": "c) Todos los ciudadanos, españoles o extranjeros." },
+  { "id": "1085", "q": "En España el voto en las elecciones es…", "a": "a) un derecho." },
+  { "id": "1086", "q": "¿Quién vigila el tráfico en las carreteras?", "a": "a) La Guardia Civil." },
+  { "id": "1087", "q": "¿Qué organismo se encarga de recaudar los impuestos?", "a": "b) La Agencia Tributaria." },
+  { "id": "1088", "q": "¿Dónde se publican las leyes nacionales?", "a": "c) En el Boletín Oficial del Estado (BOE)." },
+  { "id": "1089", "q": "¿Cómo se llaman los órganos de gobierno que solo existen en Canarias?", "a": "a) Cabildos." },
+  { "id": "1090", "q": "¿Dónde se difunde toda la información sobre novedades e iniciativas de la Administración electrónica?", "a": "c) En el PAe (Portal de la Administración Electrónica)." },
+  { "id": "1091", "q": "¿Cuál es el número de teléfono de información de la Administración General del Estado?", "a": "b) 060." },
+  { "id": "1092", "q": "España está organizada en…", "a": "b) comunidades autónomas." },
+  { "id": "1093", "q": "¿Cuántos partidos políticos hay en España?", "a": "c) Muchos." },
+  { "id": "1094", "q": "¿Dónde tiene lugar la investidura del presidente del Gobierno?", "a": "b) En el Congreso de los Diputados." },
+  { "id": "1095", "q": "¿Quién tiene el mando supremo de las Fuerzas Armadas?", "a": "a) El rey." },
+  { "id": "1096", "q": "¿Quién es el representante del Estado en una comunidad autónoma?", "a": "b) El delegado del Gobierno." },
+  { "id": "1097", "q": "¿Cuántas provincias hay en España?", "a": "b) 50." },
+  { "id": "1098", "q": "La enseñanza de las lenguas cooficiales es competencia…", "a": "b) de la comunidad autónoma." },
+  { "id": "1099", "q": "El poder ejecutivo corresponde…", "a": "a) al Gobierno del Estado." },
+  { "id": "1100", "q": "¿Cuántas cámaras hay en el Parlamento español?", "a": "b) Dos." },
+  { "id": "1101", "q": "El suministro de agua y el alumbrado de las ciudades es competencia de…", "a": "a) el ayuntamiento." },
+  { "id": "1102", "q": "En materias como nacionalidad, inmigración, emigración o extranjería solo tiene competencia…", "a": "a) el Estado." },
+  { "id": "1103", "q": "¿Cuántas mujeres han sido presidentas de Gobierno en España?", "a": "a) Ninguna." },
+  { "id": "1104", "q": "Las relaciones internacionales son competencia de…", "a": "a) el Estado." },
+  { "id": "1105", "q": "El Ayuntamiento está formado por el alcalde y…", "a": "a) los concejales." },
+  { "id": "1106", "q": "¿Quiénes forman el gobierno de las comunidades autónomas?", "a": "c) El presidente y los consejeros." },
+  { "id": "1107", "q": "¿Cuál es el órgano de gobierno en los municipios?", "a": "a) El ayuntamiento." },
+  { "id": "1108", "q": "¿Cómo se llaman los órganos de gobierno de las provincias españolas?", "a": "c) Diputaciones." },
+  { "id": "1109", "q": "¿Cuál es el órgano superior del poder ejecutivo?", "a": "a) El Gobierno." },
+  { "id": "1110", "q": "El idioma español también se llama…", "a": "b) castellano." },
+  { "id": "1111", "q": "¿A quiénes se elige en las elecciones al Parlamento Europeo?", "a": "c) A los eurodiputados." },
+  { "id": "1112", "q": "Los españoles pueden votar a partir de los…", "a": "b) 18 años." },
+  { "id": "1113", "q": "Algunos ciudadanos extranjeros pueden votar en las elecciones…", "a": "a) municipales." },
+  { "id": "1114", "q": "¿Quién controla la gestión financiera del Estado?", "a": "c) El Tribunal de Cuentas." },
+  { "id": "1115", "q": "¿A quiénes se elige en las elecciones generales?", "a": "a) A los senadores y diputados." },
+  { "id": "1116", "q": "¿Cuántos miembros tiene el Congreso de los Diputados?", "a": "b) 350." },
+  { "id": "1117", "q": "Los municipios y provincias forman parte de la Administración…", "a": "b) local." },
+  { "id": "1118", "q": "La comunidad autónoma más poblada de España es…", "a": "a) Andalucía." },
+  { "id": "1119", "q": "¿Cómo se llama la organización que defiende los intereses de los trabajadores?", "a": "c) Sindicato." },
+  { "id": "1120", "q": "¿Cuál de las siguientes personalidades ha sido presidente del Gobierno de España?", "a": "a) José María Aznar." }
+]
+,
+      2: [
+  { "id": "2001", "q": "La mayoría de edad en España es a los 16 años.", "a": "b) Falso." },
+  { "id": "2002", "q": "Los españoles que obtienen la nacionalidad por residencia deben esperar tres años para poder votar en las elecciones.", "a": "b) Falso." },
+  { "id": "2003", "q": "Los jóvenes tienen derecho a participar libremente en el desarrollo político del país.", "a": "a) Verdadero." },
+  { "id": "2004", "q": "El funcionamiento de los partidos políticos tiene que ser democrático.", "a": "a) Verdadero." },
+  { "id": "2005", "q": "Se puede obligar a alguien a decir cuáles son sus ideas políticas o religiosas.", "a": "b) Falso." },
+  { "id": "2006", "q": "Se puede limitar a una persona el derecho a entrar y salir libremente de España por motivos ideológicos.", "a": "b) Falso." },
+  { "id": "2007", "q": "La Educación Primaria (de 6 a 12 años) es gratuita y obligatoria.", "a": "a) Verdadero." },
+  { "id": "2008", "q": "La Constitución garantiza el derecho de los españoles a una vivienda digna.", "a": "a) Verdadero." },
+  { "id": "2009", "q": "En España la policía puede entrar en cualquier casa sin resolución judicial en cualquier momento.", "a": "b) Falso." },
+  { "id": "2010", "q": "Se garantiza el secreto de las comunicaciones de los españoles, salvo resolución judicial.", "a": "a) Verdadero." },
+  { "id": "2011", "q": "Todos los españoles, ya sean mayores o menores de edad, tienen derecho a votar en las elecciones.", "a": "b) Falso." },
+  { "id": "2012", "q": "Los profesores pueden enseñar con libertad, dentro de los límites de la Constitución.", "a": "a) Verdadero." },
+  { "id": "2013", "q": "La Constitución reconoce únicamente los derechos fundamentales de los españoles.", "a": "b) Falso." },
+  { "id": "2014", "q": "En España existe la pena de muerte.", "a": "b) Falso." },
+  { "id": "2015", "q": "La ley limita el acceso de terceras personas a datos de carácter personal.", "a": "a) Verdadero." },
+  { "id": "2016", "q": "La libertad de prensa está limitada por el respeto al honor de las personas.", "a": "a) Verdadero." },
+  { "id": "2017", "q": "En España las causas de separación y divorcio están reguladas por la ley.", "a": "a) Verdadero." },
+  { "id": "2018", "q": "Todos los españoles pagan la misma cantidad de impuestos.", "a": "b) Falso." },
+  { "id": "2019", "q": "En España los hombres y las mujeres tienen los mismos derechos.", "a": "a) Verdadero." },
+  { "id": "2020", "q": "La enseñanza obligatoria consta de dos etapas: Educación Primaria y Educación Secundaria Obligatoria.", "a": "a) Verdadero." },
+  { "id": "2021", "q": "En España hay una religión oficial.", "a": "b) Falso." },
+  { "id": "2022", "q": "La atención sanitaria pública es gratuita.", "a": "a) Verdadero." },
+  { "id": "2023", "q": "Los poderes públicos deben promover la educación física y el deporte.", "a": "a) Verdadero." },
+  { "id": "2024", "q": "En España está reconocido el derecho de asociación.", "a": "a) Verdadero." },
+  { "id": "2025", "q": "En caso de huelga, es obligatorio por ley mantener unos servicios mínimos.", "a": "a) Verdadero." },
+  { "id": "2026", "q": "Los trabajadores tienen derecho a hacer huelga.", "a": "a) Verdadero." },
+  { "id": "2027", "q": "La libertad ideológica está garantizada solo en parte del territorio nacional.", "a": "b) Falso." },
+  { "id": "2028", "q": "Todos los ciudadanos tienen acceso al sistema de Seguridad Social público, excepto si están desempleados.", "a": "b) Falso." },
+  { "id": "2029", "q": "Todos tienen derecho a disfrutar de un medio ambiente adecuado para el desarrollo de la persona, así como el deber de conservarlo.", "a": "a) Verdadero." },
+  { "id": "2030", "q": "Todo el mundo tiene derecho a expresar su opinión.", "a": "a) Verdadero." },
+  { "id": "2031", "q": "La edad mínima para casarse en España es de 12 años.", "a": "b) Falso." },
+  { "id": "2032", "q": "La Ley prohíbe la discriminación por cualquier circunstancia personal o social.", "a": "a) Verdadero." },
+  { "id": "2033", "q": "Los poderes públicos garantizan la defensa de los consumidores.", "a": "a) Verdadero." },
+  { "id": "2034", "q": "Los jueces administran la justicia en España según las indicaciones del Gobierno.", "a": "b) Falso." },
+  { "id": "2035", "q": "Los españoles deben ayudar en los casos de catástrofe o calamidad pública.", "a": "a) Verdadero." },
+  { "id": "2036", "q": "En España los ciudadanos pueden elegir en qué ciudad quieren vivir.", "a": "a) Verdadero." }
+]
+,
+      3: [
+  { "id": "3001", "q": "¿Dónde están Cáceres y Badajoz?", "a": "c) En Extremadura." },
+  { "id": "3002", "q": "¿Cuál es la capital del Principado de Asturias?", "a": "c) Oviedo." },
+  { "id": "3003", "q": "¿Dónde están las islas Baleares?", "a": "b) En el mar Mediterráneo." },
+  { "id": "3004", "q": "¿Cómo se llama la extensa llanura situada en el centro de la península ibérica?", "a": "c) Meseta." },
+  { "id": "3005", "q": "¿Cuál es la montaña más alta de la península ibérica?", "a": "a) El Mulhacén." },
+  { "id": "3006", "q": "¿En qué comunidad autónoma están Guadalajara y Cuenca?", "a": "b) En Castilla-La Mancha." },
+  { "id": "3007", "q": "¿De qué comunidad autónoma es capital Mérida?", "a": "c) De Extremadura." },
+  { "id": "3008", "q": "¿Dónde está Almería?", "a": "a) En Andalucía." },
+  { "id": "3009", "q": "La capital de la Comunidad Autónoma de Galicia es…", "a": "c) Santiago de Compostela." },
+  { "id": "3010", "q": "¿Cuál de estos climas es propio de España?", "a": "b) Mediterráneo." },
+  { "id": "3011", "q": "¿Dónde está el monte Aneto?", "a": "a) En los Pirineos." },
+  { "id": "3012", "q": "Tarragona está en…", "a": "a) Cataluña." },
+  { "id": "3013", "q": "España se divide en…", "a": "b) comunidades y ciudades autónomas." },
+  { "id": "3014", "q": "¿Cuál de estas comunidades autónomas tiene solo una provincia?", "a": "a) La Rioja." },
+  { "id": "3015", "q": "En el norte de África están Ceuta y…", "a": "b) Melilla." },
+  { "id": "3016", "q": "¿Cuál de estas comunidades autónomas tiene más de una provincia?", "a": "c) Castilla-La Mancha." },
+  { "id": "3017", "q": "¿Cuál de estos ríos desemboca en el océano Atlántico?", "a": "a) El Guadalquivir." },
+  { "id": "3018", "q": "¿Cuál de estas provincias forma parte de la Comunidad de Castilla-León?", "a": "a) Burgos." },
+  { "id": "3019", "q": "Las temperaturas suaves con abundantes lluvias son propias del clima…", "a": "b) oceánico." },
+  { "id": "3020", "q": "Canarias tiene un clima…", "a": "c) subtropical." },
+  { "id": "3021", "q": "El principal río que desemboca en el mar Mediterráneo es el…", "a": "a) Ebro." },
+  { "id": "3022", "q": "España está entre los países de Europa más…", "a": "b) montañosos." },
+  { "id": "3023", "q": "¿En qué provincia está el parque nacional de Monfragüe?", "a": "a) En Cáceres." },
+  { "id": "3024", "q": "Los Picos de Europa están en…", "a": "c) Asturias." }
+]
+,
+      4: [
+  { "id": "4001", "q": "Los personajes principales de la novela el Quijote son don Quijote y…", "a": "b) Sancho Panza." },
+  { "id": "4002", "q": "¿Cuál de las siguientes mujeres es una científica española reconocida mundialmente?", "a": "c) Margarita Salas." },
+  { "id": "4003", "q": "¿Cómo se llama, en literatura, a los siglos XVI y XVII?", "a": "a) Siglos de Oro." },
+  { "id": "4004", "q": "María Zambrano, María Teresa León y Rosa Chacel son…", "a": "b) escritoras." },
+  { "id": "4005", "q": "¿Qué músico compuso El amor brujo?", "a": "a) Manuel de Falla." },
+  { "id": "4006", "q": "¿Qué dulce es típico de las navidades?", "a": "b) El turrón." },
+  { "id": "4007", "q": "¿Qué instrumento musical es típico del folclore español?", "a": "c) La guitarra." },
+  { "id": "4008", "q": "Isabel Coixet es una…", "a": "c) directora de cine." },
+  { "id": "4009", "q": "Una de las cantantes españolas más famosas actualmente es...", "a": "a) Rosalía." },
+  { "id": "4010", "q": "¿En qué ciudad de España hay una mezquita que es Patrimonio de la Humanidad?", "a": "c) Córdoba." },
+  { "id": "4011", "q": "¿En qué ciudad de España se encuentra La Alhambra, que es Patrimonio de la Humanidad?", "a": "c) En Granada." },
+  { "id": "4012", "q": "¿Dónde está La Sagrada Familia, el monumento de Gaudí?", "a": "a) En Barcelona." },
+  { "id": "4013", "q": "Pablo Picasso fue un famoso…", "a": "a) pintor." },
+  { "id": "4014", "q": "¿Cómo se llama la mayor institución pública dedicada a la investigación en España?", "a": "b) Consejo Superior de investigaciones Científicas (CSIC)." },
+  { "id": "4015", "q": "Paco de Lucía fue un famoso…", "a": "b) guitarrista." },
+  { "id": "4016", "q": "¿Cuál de estas manifestaciones folclóricas es patrimonio cultural inmaterial de la humanidad?", "a": "a) El flamenco." },
+  { "id": "4017", "q": "¿Cuál es la moneda común en muchos países de la Unión Europea?", "a": "c) El euro." },
+  { "id": "4018", "q": "La fiesta de la Tomatina se celebra en…", "a": "b) Buñol." },
+  { "id": "4019", "q": "La Feria del Libro se celebra en toda España, normalmente, en…", "a": "b) primavera." },
+  { "id": "4020", "q": "La Liga y la Copa del Rey son competiciones de…", "a": "c) fútbol." },
+  { "id": "4021", "q": "¿Quién ha recibido el premio Nobel de Literatura?", "a": "c) Vicente Aleixandre." },
+  { "id": "4022", "q": "Las chirigotas de Cádiz son típicas de…", "a": "b) los carnavales." },
+  { "id": "4023", "q": "Teresa Perales y Daniel Molina son...", "a": "a) campeones paraolímpicos." },
+  { "id": "4024", "q": "¿Qué toman los españoles la noche del 31 de diciembre para celebrar el cambio de año?", "a": "b) Uvas." },
+  { "id": "4025", "q": "¿Dónde está al Museo del Prado?", "a": "a) En Madrid." },
+  { "id": "4026", "q": "¿Dónde se celebra un famoso festival de cine?", "a": "a) En San Sebastián." },
+  { "id": "4027", "q": "¿Qué escritora española escribe en otra lengua oficial de España?", "a": "a) Mercè Rodoreda." },
+  { "id": "4028", "q": "¿Qué tres culturas convivieron en la España medieval?", "a": "a) La cristiana, la judía y la musulmana." },
+  { "id": "4029", "q": "El 6 de diciembre se celebra en España…", "a": "a) el Día de la Constitución." },
+  { "id": "4030", "q": "¿Dónde se encuentran la Cueva de Altamira que son Patrimonio Mundial de UNESCO?", "a": "c) En Cantabria." },
+  { "id": "4031", "q": "La Transición española a la democracia comienza en...", "a": "b) 1975." },
+  { "id": "4032", "q": "El Premio Cervantes se da a…", "a": "b) escritores." },
+  { "id": "4033", "q": "Los Premios Goya están relacionados con…", "a": "a) el cine." },
+  { "id": "4034", "q": "¿Qué premios promueven en España valores científicos, culturales y humanísticos?", "a": "b) Los Premios Princesa de Asturias." },
+  { "id": "4035", "q": "¿Cuándo fueron los Juegos Olímpicos de Barcelona?", "a": "a) En 1992." },
+  { "id": "4036", "q": "El escritor Miguel de Cervantes nació en…", "a": "c) Alcalá de Henares." }
+]
+,
+      5: [
+  { "id": "5001", "q": "¿Quién hace el DNI?", "a": "a) La Policía Nacional." },
+  { "id": "5002", "q": "¿Cuál es el documento que certifica el lugar de residencia del titular?", "a": "a) El certificado de empadronamiento." },
+  { "id": "5003", "q": "Para hacer el DNI debes acudir a…", "a": "a) una comisaría de policía." },
+  { "id": "5004", "q": "¿Cuál es la edad mínima para conducir un coche en España?", "a": "b) 18 años." },
+  { "id": "5005", "q": "El carné de conducir se hace en…", "a": "a) la Dirección General de Tráfico (DGT)." },
+  { "id": "5006", "q": "Para sacar el carné de conducir hay que aprobar…", "a": "c) un examen teórico y otro práctico." },
+  { "id": "5007", "q": "¿Dónde se tramita el libro de familia?", "a": "a) En el Registro Civil." },
+  { "id": "5008", "q": "¿Cuál de estos canales de televisión es autonómico?", "a": "c) Canal Sur." },
+  { "id": "5009", "q": "¿Cuánto dura el permiso de maternidad o paternidad?", "a": "b) 16 semanas." },
+  { "id": "5010", "q": "¿Cuál es la tasa máxima de alcohol en sangre permitida a los conductores, en gramos por litro (g/l)?", "a": "a) 0,5." },
+  { "id": "5011", "q": "Las viviendas de protección oficial…", "a": "a) tienen un precio limitado." },
+  { "id": "5012", "q": "¿Qué comunidad autónoma es conocida por la calidad de su aceite de oliva?", "a": "b) Andalucía." },
+  { "id": "5013", "q": "¿Cómo se llama la revisión que deben pasar obligatoriamente los coches?", "a": "b) ITV (Inspección Técnica de Vehículos)." },
+  { "id": "5014", "q": "El aperitivo que acompaña a la bebida en bares y restaurantes se llama...", "a": "b) tapa." },
+  { "id": "5015", "q": "¿Dónde se tramita la tarjeta sanitaria?", "a": "b) En el centro de salud." },
+  { "id": "5016", "q": "¿Con cuántos hijos una familia es numerosa?", "a": "c) Con 3 hijos." },
+  { "id": "5017", "q": "En España está permitido el matrimonio…", "a": "b) entre personas del mismo y diferente sexo." },
+  { "id": "5018", "q": "Los propietarios de perros deben registrarlos en…", "a": "c) el Ayuntamiento." },
+  { "id": "5019", "q": "Los principales ingredientes de la tortilla española son huevos y…", "a": "b) patatas." },
+  { "id": "5020", "q": "¿Quién es un cocinero famoso dentro y fuera de España?", "a": "a) José Andrés." },
+  { "id": "5021", "q": "¿Cuál de estos canales de televisión es público?", "a": "b) La 1." },
+  { "id": "5022", "q": "En una comunidad de vecinos, una de las normas es…", "a": "b) no molestar con ruido." },
+  { "id": "5023", "q": "La sangría es una bebida compuesta por refrescos, vino y…", "a": "a) fruta." },
+  { "id": "5024", "q": "La sidra es una bebida típica de…", "a": "a) Asturias." },
+  { "id": "5025", "q": "Los españoles tienen dos apellidos, el primero es…", "a": "c) puede ser el de la madre o el del padre." },
+  { "id": "5026", "q": "La Fiesta Nacional de España es el…", "a": "c) 12 de octubre." },
+  { "id": "5027", "q": "¿Cuál es el horario habitual de los hipermercados y centros comerciales?", "a": "b) De 10:00 a 22:00 h." },
+  { "id": "5028", "q": "¿Dónde se hace el pasaporte?", "a": "b) En una comisaría de policía." },
+  { "id": "5029", "q": "El Ministerio de Igualdad es el encargado de luchar contra la violencia de género y la…", "a": "b) discriminación." },
+  { "id": "5030", "q": "¿Cuál de estas regiones es conocida por sus vinos con denominación de origen?", "a": "a) Ribera de Duero." },
+  { "id": "5031", "q": "El DNI se hace…", "a": "b) en persona." },
+  { "id": "5032", "q": "El horario de Canarias, con respecto a la Península, es de…", "a": "b) una hora menos." },
+  { "id": "5033", "q": "Para acceder a la Universidad se debe superar una prueba de evaluación llamada…", "a": "c) Prueba de Acceso a la Universidad." },
+  { "id": "5034", "q": "¿Cuál de estos productos necesita importar España de otros países?", "a": "a) Petróleo." },
+  { "id": "5035", "q": "¿Qué tipo de impuestos tienen que pagar los ciudadanos en España?", "a": "c) impuestos directos e indirectos." },
+  { "id": "5036", "q": "Los adultos sin Bachillerato pueden estudiar en la Universidad haciendo una prueba especial a partir de los…", "a": "c) 25 años." },
+  { "id": "5037", "q": "¿Dónde puede encontrarse la siguiente norma «Dejar salir antes de entrar»?", "a": "a) En el transporte público." },
+  { "id": "5038", "q": "El Bachillerato en España…", "a": "b) se compone de dos cursos académicos." },
+  { "id": "5039", "q": "El Impuesto sobre el Valor Añadido (IVA) forma parte de los…", "a": "a) impuestos indirectos." },
+  { "id": "5040", "q": "¿Qué número reciben los trabajadores al comenzar su primer empleo?", "a": "a) El de la Seguridad Social." },
+  { "id": "5041", "q": "Los colegios públicos…", "a": "c) son gratuitos." },
+  { "id": "5042", "q": "¿Cuál de estos puertos es uno de los principales de España?", "a": "c) Algeciras." },
+  { "id": "5043", "q": "Un colegio concertado es un colegio privado que…", "a": "a) recibe dinero de la Administración." },
+  { "id": "5044", "q": "España exporta productos principalmente a países…", "a": "b) de la Unión Europea." },
+  { "id": "5045", "q": "Las bibliotecas públicas son gratuitas para…", "a": "a) todos." },
+  { "id": "5046", "q": "¿Cuál de estos productos exporta España más que importa?", "a": "c) Calzado." },
+  { "id": "5047", "q": "Una persona mayor de 18 años puede obtener el título de Graduado en Educación Secundaria Obligatoria en…", "a": "a) un Centro de Educación de Personas Adultas." },
+  { "id": "5048", "q": "La formación profesional…", "a": "b) puede ser de grado medio o superior." },
+  { "id": "5049", "q": "¿Adónde vamos para ver al médico de familia o al pediatra?", "a": "b) Al centro de salud." },
+  { "id": "5050", "q": "¿Para cuántos años vale la tarjeta sanitaria europea?", "a": "b) Para dos años." },
+  { "id": "5051", "q": "¿A qué hora se cena normalmente en España?", "a": "c) A las 21 o 22 h." },
+  { "id": "5052", "q": "¿Cuál es el número de teléfono único para cualquier emergencia?", "a": "b) 112." },
+  { "id": "5053", "q": "¿Cuál es un periódico deportivo?", "a": "b) As." },
+  { "id": "5054", "q": "¿Dónde se venden sellos y tabaco?", "a": "c) En el estanco." },
+  { "id": "5055", "q": "¿Cómo se llama el tren español de alta velocidad?", "a": "a) AVE." },
+  { "id": "5056", "q": "La organización que trabaja para conseguir la integración de las personas con discapacidad visual es…", "a": "a) la ONCE." },
+  { "id": "5057", "q": "El Camino de Santiago es…", "a": "a) Patrimonio de la Humanidad." },
+  { "id": "5058", "q": "¿Cuál es el canal de televisión estatal que transmite noticias de actualidad nacional e internacional continuamente?", "a": "c) Canal 24 horas." },
+  { "id": "5059", "q": "El teléfono gratuito para las víctimas de violencia de género es el…", "a": "c) 016." },
+  { "id": "5060", "q": "En España, la red de trenes puede ser de larga distancia, de media distancia y…", "a": "a) de cercanías." },
+  { "id": "5061", "q": "¿Qué está prohibido hacer en la puerta de un hospital o colegio?", "a": "a) Fumar." },
+  { "id": "5062", "q": "Cuando compramos 250 gramos de un alimento estamos comprando…", "a": "b) un cuarto de kilo." },
+  { "id": "5063", "q": "Si compramos una botella de agua de 750 ml, compramos una botella de…", "a": "a) tres cuartos de litro." },
+  { "id": "5064", "q": "¿Dónde se compran las medicinas con receta?", "a": "c) En la farmacia." },
+  { "id": "5065", "q": "¿Cuál de estas tres recomendaciones podemos encontrar en un parque?", "a": "a) No pisar el césped." },
+  { "id": "5066", "q": "¿Cuál de las siguientes cosas es obligatoria para el propietario de un coche en España?", "a": "b) El seguro." },
+  { "id": "5067", "q": "El aeropuerto Adolfo Suárez está en…", "a": "b) Madrid." },
+  { "id": "5068", "q": "En un coche es obligatorio el uso del cinturón de seguridad...", "a": "c) en todos los asientos." },
+  { "id": "5069", "q": "¿Cuál es el límite de velocidad en autopista?", "a": "b) 120 km/h." },
+  { "id": "5070", "q": "Ceder el asiento a las personas con movilidad reducida es una norma que encontramos indicada en…", "a": "a) el transporte público." },
+  { "id": "5071", "q": "¿En qué caso se retira el permiso de conducir?", "a": "b) Por la pérdida de los puntos." },
+  { "id": "5072", "q": "¿Qué significa Renfe?", "a": "b) Red Nacional de los Ferrocarriles Españoles." },
+  { "id": "5073", "q": "Los españoles necesitan el pasaporte para viajar a…", "a": "b) China." },
+  { "id": "5074", "q": "¿Cuál es la edad mínima para trabajar en España?", "a": "a) 16 años." },
+  { "id": "5075", "q": "¿Cuál es el sector de mayor peso en la economía española?", "a": "b) Servicios." },
+  { "id": "5076", "q": "España es innovadora en el sector de…", "a": "b) las energías renovables." },
+  { "id": "5077", "q": "¿Cómo se llama la ley laboral más importante de España?", "a": "b) El Estatuto de los Trabajadores." },
+  { "id": "5078", "q": "¿Cuáles de estos establecimientos está abierto 24 horas si es necesario?", "a": "a) Farmacia." },
+  { "id": "5079", "q": "La educación infantil en España…", "a": "b) tiene dos ciclos." },
+  { "id": "5080", "q": "¿Cuándo empieza el calendario escolar?", "a": "b) En septiembre." },
+  { "id": "5081", "q": "Las Escuelas Oficiales de Idiomas…", "a": "b) son para mayores de 16 años." },
+  { "id": "5082", "q": "¿Cuál es el documento que recoge los años de cotización a la Seguridad Social?", "a": "a) Informe de vida laboral." },
+  { "id": "5083", "q": "Los convenios colectivos de una empresa son los que se firman con los representantes de los trabajadores sobre…", "a": "a) las condiciones laborales." },
+  { "id": "5084", "q": "¿Cuál de estas comunidades autónomas tiene el PIB por habitante más alto?", "a": "a) Navarra." }
+]
+,
+    };
+
+    // Referencias a elementos HTML
+    const tasksButtonsDiv = document.getElementById('tasks-buttons');
+    const taskContentDiv = document.getElementById('task-content');
+    const questionsListDiv = document.getElementById('questions-list');
+    const backButton = document.getElementById('back-button');
+
+    // Evento para los botones de tarea
+    tasksButtonsDiv.addEventListener('click', (e) => {
+      if (e.target.classList.contains('btn-task')) {
+        const taskNumber = e.target.getAttribute('data-task');
+        showTask(taskNumber);
+      }
+    });
+
+    // Volver a vista de botones
+    backButton.addEventListener('click', () => {
+      taskContentDiv.classList.add('d-none');
+      questionsListDiv.innerHTML = '';
+      tasksButtonsDiv.classList.remove('d-none');
+      window.scrollTo(0, 0);
+    });
+
+    function showTask(taskNumber) {
+      tasksButtonsDiv.classList.add('d-none');
+      questionsListDiv.innerHTML = '';
+
+      if (!questions[taskNumber]) {
+        questionsListDiv.innerHTML = '<p>No hay preguntas para esta tarea.</p>';
+      } else {
+        questions[taskNumber].forEach(({id, q, a}) => {
+          const questionElem = document.createElement('div');
+          questionElem.classList.add('mb-3');
+          questionElem.innerHTML = `<strong>${id} - ${q}</strong><br><pre>${a}</pre>`;
+          questionsListDiv.appendChild(questionElem);
+        });
+      }
+
+      taskContentDiv.classList.remove('d-none');
+      window.scrollTo(0, 0);
+    }
+
+  </script>
+</body>
+</html>
